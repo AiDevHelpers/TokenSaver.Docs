@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/build/slnx-implicit-build-config",
+  "title": "Bare .slnx project entries build under EVERY configuration — Debug F5 builds your installer",
+  "language": "any",
+  "kind": "build",
+  "applies_to": { "platform": "windows" },
+  "symptoms": ["F5/Debug build fails with WiX cabinet errors even though nobody asked for an installer"],
+  "good_pattern": "<Build Solution=\"Release|Any CPU\" Project=\"Release\" />  <!-- and no entry for Debug -->",
+  "severity": "warning",
+  "explanation": "A bare <Project> entry in .slnx builds under every solution configuration, Debug included. Scope wixproj entries with an explicit <Build Solution=\"Release|Any CPU\" Project=\"Release\" /> and omit Debug. Caution: vs-solutionpersistence issue #138 — VS 'Save All' can silently re-add a bare <Build /> that undoes this; if the symptom returns, check the .slnx for it before re-deriving anything. Prefer hand-editing .slnx for these entries.",
+  "related": ["platforms/windows/gotchas/build/wix-cabinet-race"],
+  "source": "docs/pitfalls.md#f5debug-solution-builds-hit-the-wix-cabinet-race"
+}

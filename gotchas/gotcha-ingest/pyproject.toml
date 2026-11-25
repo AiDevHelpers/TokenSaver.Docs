@@ -1,0 +1,27 @@
+[project]
+name = "gotcha-ingest"
+version = "0.1.0"
+description = "Pulls documentation and builds gotcha-db records (gotchas, snippets, patterns) per language."
+requires-python = ">=3.11"
+dependencies = [
+    "jsonschema>=4.20",
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "markdown-it-py>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.scripts]
+gotcha-ingest = "gotcha_ingest.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100

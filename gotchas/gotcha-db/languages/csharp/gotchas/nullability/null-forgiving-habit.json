@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "languages/csharp/gotchas/nullability/null-forgiving-habit",
+  "title": "Don't suppress nullable warnings with `!` as a default habit",
+  "language": "csharp",
+  "kind": "code-pattern",
+  "symptoms": ["CS8600/CS8602/CS8618 warnings", "NullReferenceException at runtime in config-binding or EF entity code"],
+  "bad_pattern": "config.Value!.SomeField",
+  "detection": {
+    "kind": "regex",
+    "pattern": "\\w+!\\.",
+    "file_glob": "*.cs"
+  },
+  "error_signatures": ["CS8600", "CS8602", "CS8618"],
+  "severity": "warning",
+  "explanation": "With <Nullable>enable</Nullable>, CS8600/CS8602/CS8618 are real signals — especially in EF Core entities and config-binding models where a field can legitimately be null after deserialization. Handle the null instead of suppressing with `!`.",
+  "source": "docs/pitfalls.md#nullable-reference-types-are-enabled-solution-wide"
+}

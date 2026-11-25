@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "languages/csharp/gotchas/namespaces/primary-ctor-missing-using",
+  "title": "CS0246 on a primary-constructor parameter type means a missing using, not a missing type",
+  "language": "csharp",
+  "kind": "code-pattern",
+  "symptoms": ["CS0246: The type or namespace name '...' could not be found"],
+  "error_signatures": ["CS0246"],
+  "severity": "warning",
+  "explanation": "When adding a primary constructor that references a type from another namespace (e.g. IOptions<T>), CS0246 almost always means the corresponding `using` directive is missing — not that the type doesn't exist. Add the using before investigating package references.",
+  "source": "docs/pitfalls.md#primary-constructors-and-using-directives"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "languages/powershell/gotchas/pipeline/array-unwrapping",
+  "title": "Pipelines unwrap single-item results to scalars — force @() for collection semantics",
+  "language": "powershell",
+  "kind": "code-pattern",
+  "symptoms": [".Count or indexing fails or misbehaves when a query returned exactly one item", "$null where an empty array was expected"],
+  "bad_pattern": "$results = Get-Service -Name \"Foo*\"",
+  "good_pattern": "$results = @(Get-Service -Name \"Foo*\")",
+  "severity": "warning",
+  "explanation": "A pipeline or cmdlet returning zero or one items yields a scalar in some contexts and $null/empty in others. When output is used later as a collection, wrap in @() to force array semantics.",
+  "source": "docs/pitfalls.md#arraypipeline-unwrapping-surprises"
+}

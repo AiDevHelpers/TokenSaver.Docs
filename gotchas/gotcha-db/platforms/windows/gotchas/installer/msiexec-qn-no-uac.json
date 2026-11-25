@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/installer/msiexec-qn-no-uac",
+  "title": "msiexec /qn from an unelevated process fails with 1925 and never shows UAC",
+  "language": "any",
+  "kind": "environment",
+  "applies_to": { "platform": "windows" },
+  "symptoms": ["Installer fails with error 1925 (insufficient privileges)", "User reports no UAC dialog ever appeared"],
+  "bad_pattern": "execFile(\"msiexec.exe\", [\"/i\", msi, \"/qn\"])",
+  "good_pattern": "powershell -Command \"Start-Process msiexec.exe -ArgumentList @(...) -Verb RunAs -Wait -PassThru\"",
+  "error_signatures": ["error 1925", "insufficient privileges"],
+  "severity": "error",
+  "explanation": "/qn suppresses ALL UI including the UAC elevation prompt itself, so an unelevated caller installing a perMachine MSI fails silently with 1925 — no dialog ever appears. Shell out through Start-Process -Verb RunAs, which triggers UAC regardless of the child command's /qn.",
+  "source": "docs/pitfalls.md#msiexec-qn-does-not-show-a-uac-prompt"
+}

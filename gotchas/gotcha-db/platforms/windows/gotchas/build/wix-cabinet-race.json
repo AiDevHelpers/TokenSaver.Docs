@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/build/wix-cabinet-race",
+  "title": "Concurrent MSBuild processes cause intermittent WiX cabinet failures",
+  "language": "any",
+  "kind": "build",
+  "applies_to": { "platform": "windows", "dependency": "wix" },
+  "symptoms": [
+    "WIXBUILD error 0x80070002: failed to compress cabinet",
+    "WixNativeException: wixnative.exe failed ... file not found, though the file exists",
+    "Re-running the identical build later succeeds (strong tell)"
+  ],
+  "error_signatures": ["0x80070002.*cabinet", "WixNativeException"],
+  "severity": "error",
+  "explanation": "Reused MSBuild worker nodes (nodeReuse) plus overlapping builds (CLI + IDE) race on the same obj/ and staging directories. Not a .wxs bug. Fix: close other builds of the same project, `dotnet build-server shutdown`, kill leftover dotnet/MSBuild/wixnative processes, delete obj/bin, run ONE build.",
+  "diagnosis": "If the same build passes after simply waiting/retrying with nothing changed, it's this race, not your code.",
+  "related": ["platforms/windows/gotchas/build/slnx-implicit-build-config"],
+  "source": "docs/pitfalls.md#concurrent-dotnet-buildmsbuild-processes"
+}

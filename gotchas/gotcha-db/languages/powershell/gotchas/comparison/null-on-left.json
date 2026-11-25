@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "languages/powershell/gotchas/comparison/null-on-left",
+  "title": "Put $null on the left of comparisons",
+  "language": "powershell",
+  "kind": "code-pattern",
+  "symptoms": ["A null check on an array silently returns $false even when the array is empty"],
+  "bad_pattern": "if ($value -eq $null)",
+  "good_pattern": "if ($null -eq $value)",
+  "detection": {
+    "kind": "regex",
+    "pattern": "\\$\\w+\\s+-([cin]?eq|ne)\\s+\\$null",
+    "file_glob": "*.ps1"
+  },
+  "severity": "warning",
+  "explanation": "If $value is an array, `$value -eq $null` filters the array instead of comparing, and can silently return $false even when the array is empty. `$null -eq $value` always does the comparison you meant.",
+  "source": "docs/pitfalls.md#null-comparison-order"
+}

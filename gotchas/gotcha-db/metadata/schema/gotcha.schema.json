@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gotcha-db/schema/gotcha.schema.json",
+  "title": "Gotcha record",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "language", "kind", "severity", "explanation"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": {
+      "type": "string",
+      "description": "Shard path relative to repo root, without .json. File location and identity must match.",
+      "pattern": "^[a-z0-9_/-]+$"
+    },
+    "title": { "type": "string", "maxLength": 120 },
+    "language": {
+      "type": "string",
+      "description": "Primary language, or 'any' for cross-language/platform gotchas.",
+      "examples": ["csharp", "python", "powershell", "typescript", "any"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["code-pattern", "environment", "build", "runtime", "config"],
+      "description": "code-pattern: detectable in source. environment: OS/service/PATH-level. build: build-system/tooling. runtime: only manifests when running. config: config-file content."
+    },
+    "applies_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language_version": { "type": "string" },
+        "dependency": { "type": "string" },
+        "version_range": { "type": "string", "description": "Normalized semver range; native range preserved in source_range." },
+        "source_range": { "type": "string" },
+        "runtime": { "type": "string", "examples": ["windows", "wsl", "docker", "net8.0"] },
+        "platform": { "type": "string", "examples": ["windows", "linux", "macos"] }
+      }
+    },
+    "symptoms": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What the developer observes — error text fragments, behaviors, red herrings."
+    },
+    "bad_pattern": { "type": "string" },
+    "good_pattern": { "type": "string" },
+    "detection": {
+      "type": "object",
+      "required": ["kind", "pattern"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "type": "string", "enum": ["regex"], "description": "ast/semantic reserved for future schema versions." },
+        "pattern": { "type": "string" },
+        "file_glob": { "type": "string", "description": "Restrict detection to matching files, e.g. '*.ps1'." }
+      },
+      "description": "Omit for gotchas not detectable by scanning source (kind: environment/runtime)."
+    },
+    "error_signatures": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Regexes matched against observed error output."
+    },
+    "fix_snippet": { "type": "string", "description": "Snippet id (path under snippets/, no extension)." },
+    "severity": { "type": "string", "enum": ["error", "warning", "info"] },
+    "explanation": { "type": "string", "description": "Root cause + fix. The payload shown to the AI client." },
+    "diagnosis": { "type": "string", "description": "How to confirm this is the cause before applying the fix." },
+    "source": { "type": "string", "description": "URL or repo-relative doc path this was derived from." },
+    "related": { "type": "array", "items": { "type": "string" }, "description": "Related gotcha ids." }
+  }
+}

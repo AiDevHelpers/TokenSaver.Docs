@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "patterns/python/example/inline-code",
+  "title": "Must be rejected: skeleton and uses are mutually exclusive",
+  "language": "python",
+  "intent_tags": ["example", "invalid", "test"],
+  "summary": "Component declares both skeleton and uses.",
+  "components": [
+    {
+      "role": "service",
+      "description": "invalid component",
+      "skeleton": "snippets/python/x",
+      "uses": "patterns/python/y"
+    }
+  ]
+}

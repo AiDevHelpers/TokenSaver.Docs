@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/services/scm-differs-from-interactive",
+  "title": "A service working when run manually proves nothing about SCM startup (error 1920 / event 7009)",
+  "language": "any",
+  "kind": "environment",
+  "applies_to": { "platform": "windows" },
+  "symptoms": [
+    "Service starts fine via `app.exe --service` in a shell but fails under the SCM with error 1920 or event 7009 (30s timeout)",
+    "msiexec exit 1603 during install-time service start",
+    "'service failed to start... The operation completed successfully' — red herring, not a success"
+  ],
+  "error_signatures": ["error 1920", "7009", "1603"],
+  "severity": "error",
+  "explanation": "SCM context differs from interactive: (1) it uses the machine-wide System PATH, not your user PATH — bare-command Process.Start lookups can silently fail to resolve; (2) Session 0 has no console, so Console/ILogger console output is invisible.",
+  "diagnosis": "Check [Environment]::GetEnvironmentVariable('PATH','Machine') rather than your shell's PATH. Add a temporary raw File.AppendAllText trace (bypassing ILogger/DI) at each startup checkpoint — it's the only logging that survives a no-console SCM launch.",
+  "related": ["platforms/windows/gotchas/services/port-conflict-1067"],
+  "source": "docs/pitfalls.md#a-windows-service-can-work-fine-run-manually"
+}

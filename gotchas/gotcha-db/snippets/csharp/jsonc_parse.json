@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "snippets/csharp/jsonc_parse",
+  "language": "csharp",
+  "description": "Tolerant JSONC parse (comments + trailing commas) with System.Text.Json.",
+  "variables": {
+    "result_var": { "kind": "context", "default": "root", "description": "Variable receiving the parsed JsonObject." },
+    "input_var": { "kind": "context", "default": "text", "description": "String variable holding the raw JSON/JSONC." }
+  }
+}

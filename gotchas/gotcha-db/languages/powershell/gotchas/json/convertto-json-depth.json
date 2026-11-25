@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "languages/powershell/gotchas/json/convertto-json-depth",
+  "title": "ConvertTo-Json default depth (2) silently truncates nested objects",
+  "language": "powershell",
+  "kind": "code-pattern",
+  "symptoms": ["Nested config objects written as literal \"@{...}\" strings in the output JSON"],
+  "bad_pattern": "$config | ConvertTo-Json",
+  "good_pattern": "$config | ConvertTo-Json -Depth 10",
+  "detection": {
+    "kind": "regex",
+    "pattern": "ConvertTo-Json(?!.*-Depth)",
+    "file_glob": "*.ps1"
+  },
+  "severity": "error",
+  "explanation": "ConvertTo-Json's default -Depth is 2 (still, in PS7). Deeper structures are silently stringified to \"@{...}\" instead of serialized. Always pass explicit -Depth when writing nested config (e.g. SimpleModelServer.config.json).",
+  "source": "docs/pitfalls.md#dont-assume-windows-powershell-51-syntax-or-defaults"
+}

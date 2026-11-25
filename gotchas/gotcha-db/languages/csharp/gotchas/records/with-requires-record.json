@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "languages/csharp/gotchas/records/with-requires-record",
+  "title": "`with` expressions require record (or struct) types, not class",
+  "language": "csharp",
+  "kind": "code-pattern",
+  "symptoms": ["CS8858: The receiver type is not a valid record type and is not a struct type"],
+  "bad_pattern": "class MyResult { ... }  // used with `result with { ... }` elsewhere",
+  "good_pattern": "record MyResult { ... }",
+  "error_signatures": ["CS8858"],
+  "severity": "error",
+  "explanation": "C# `with` expressions only work on record or struct types. If a model type is used with `with { ... }` anywhere, declare it as `record`, not `class`.",
+  "source": "docs/pitfalls.md#with-expressions-require-record-types"
+}

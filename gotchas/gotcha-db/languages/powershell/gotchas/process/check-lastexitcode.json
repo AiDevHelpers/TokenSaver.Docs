@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "languages/powershell/gotchas/process/check-lastexitcode",
+  "title": "External processes don't throw on failure — check $LASTEXITCODE explicitly",
+  "language": "powershell",
+  "kind": "code-pattern",
+  "symptoms": ["A failed dotnet build silently falls through to the next step, e.g. copying stale binaries during install"],
+  "bad_pattern": "dotnet build; Copy-Item bin\\Release ...",
+  "good_pattern": "dotnet build; if ($LASTEXITCODE -ne 0) { throw \"build failed\" }",
+  "severity": "error",
+  "explanation": "dotnet build/publish, taskkill, and other external invocations only set $LASTEXITCODE — they never throw. In script chains, check it after every build/install step or failures silently cascade.",
+  "source": "docs/pitfalls.md#external-process-exit-codes"
+}

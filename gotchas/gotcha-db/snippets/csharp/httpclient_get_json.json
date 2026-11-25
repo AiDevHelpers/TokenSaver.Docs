@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "snippets/csharp/httpclient_get_json",
+  "language": "csharp",
+  "description": "GET + JSON deserialize with cancellation, streaming headers-first.",
+  "variables": {
+    "request_uri": { "kind": "context", "default": "requestUri", "description": "URI string or variable." },
+    "dto_type": { "kind": "context", "default": "ResponseDto", "description": "DTO type matching the response body." }
+  }
+}

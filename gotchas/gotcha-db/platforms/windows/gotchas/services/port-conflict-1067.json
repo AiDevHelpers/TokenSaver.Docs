@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/services/port-conflict-1067",
+  "title": "Service exit 1067 can mean another launch mode of the same app already owns the port",
+  "language": "any",
+  "kind": "environment",
+  "applies_to": { "platform": "windows" },
+  "symptoms": [
+    "sc start reports 1067 ('process terminated unexpectedly') with no detail; repeated sc start does nothing",
+    "Looks like a permissions/install problem but isn't"
+  ],
+  "error_signatures": ["1067", "AddressInUseException"],
+  "severity": "error",
+  "explanation": "If the same app can run as a manual process, an extension-spawned child, and a Windows service, an already-running instance holding the port makes the service's bind throw AddressInUseException → unhandled → exit 1067.",
+  "diagnosis": "Get-WinEvent on the Application log — .NET's default handler logs the full exception (including port) even with no custom tracing. Then Get-NetTCPConnection -LocalPort <port> -State Listen to find and stop the PID holding the port.",
+  "related": ["platforms/windows/gotchas/services/scm-differs-from-interactive"],
+  "source": "docs/pitfalls.md#a-windows-service-can-fail-to-start-error-1067"
+}

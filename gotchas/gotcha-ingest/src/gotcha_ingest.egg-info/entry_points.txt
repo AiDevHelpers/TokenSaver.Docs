@@ -1,0 +1,2 @@
+[console_scripts]
+gotcha-ingest = gotcha_ingest.cli:main

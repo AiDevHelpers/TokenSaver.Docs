@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gotcha-db/schema/pattern.schema.json",
+  "title": "Pattern record — the shape of a solution; contains no literal code, only refs",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "language", "intent_tags", "summary", "components"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^patterns/[a-z0-9_/-]+$" },
+    "title": { "type": "string", "maxLength": 120 },
+    "language": { "type": "string" },
+    "intent_tags": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "type": "string" },
+      "description": "Keywords matched against gotcha_scaffold intent text. Include synonyms the caller might use."
+    },
+    "applies_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language_version": { "type": "string" },
+        "dependency": { "type": "string" },
+        "version_range": { "type": "string" },
+        "runtime": { "type": "string" },
+        "platform": { "type": "string" }
+      }
+    },
+    "summary": { "type": "string", "description": "Why this shape — one or two sentences shown with the skeleton." },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["role", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "role": { "type": "string", "description": "service | viewmodel | page | helper | ..." },
+          "name_hint": { "type": "string", "description": "Template for the generated type/function name, e.g. {{domain}}Service." },
+          "description": { "type": "string" },
+          "skeleton": { "type": "string", "description": "Snippet id rendered as this component's frame. Mutually exclusive with uses." },
+          "uses": { "type": "string", "description": "Sub-pattern id composed here instead of a local skeleton. Mutually exclusive with skeleton." },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["placeholder", "description"],
+              "additionalProperties": false,
+              "properties": {
+                "placeholder": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "Stable key emitted as TODO(gotcha:<placeholder>) in the skeleton and passed back to gotcha_expand."
+                },
+                "description": { "type": "string" },
+                "starting_point": { "type": "string", "description": "Snippet id expanded on request. Optional — some steps are domain-specific." },
+                "gotchas": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "oneOf": [
+          { "required": ["skeleton"] },
+          { "required": ["uses"] },
+          { "not": { "anyOf": [ { "required": ["skeleton"] }, { "required": ["uses"] } ] } }
+        ]
+      }
+    },
+    "gotchas": { "type": "array", "items": { "type": "string" }, "description": "Pattern-wide gotchas." },
+    "related": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": "string" }
+  }
+}

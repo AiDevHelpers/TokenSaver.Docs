@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "patterns/csharp/mvvm/observable-viewmodel",
+  "title": "Observable viewmodel with busy-guarded async refresh",
+  "language": "csharp",
+  "intent_tags": ["viewmodel", "mvvm", "observable", "binding", "refresh", "busy indicator", "maui", "wpf"],
+  "applies_to": { "dependency": "communitytoolkit.mvvm", "version_range": ">=8.0" },
+  "summary": "CommunityToolkit.Mvvm source-generated viewmodel: [ObservableProperty] state, [RelayCommand] refresh with an IsBusy guard so double-taps don't double-fetch.",
+  "components": [
+    {
+      "role": "viewmodel",
+      "name_hint": "{{domain}}ViewModel",
+      "description": "Owns bound state; exposes RefreshCommand for the page.",
+      "skeleton": "snippets/csharp/observable_viewmodel",
+      "steps": [
+        {
+          "placeholder": "load",
+          "description": "Call the data service and assign the result to the observable property",
+          "gotchas": ["languages/csharp/gotchas/nullability/null-forgiving-habit"]
+        }
+      ]
+    }
+  ],
+  "gotchas": [],
+  "related": ["patterns/csharp/net/fetch-parse-bind"]
+}

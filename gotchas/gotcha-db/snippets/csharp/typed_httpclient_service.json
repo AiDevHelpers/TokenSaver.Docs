@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "snippets/csharp/typed_httpclient_service",
+  "language": "csharp",
+  "description": "Skeleton for a typed HttpClient service (register via AddHttpClient<T>).",
+  "variables": {
+    "service_name": { "kind": "context", "default": "DataService", "description": "Generated service class name, e.g. WeatherService." },
+    "model_type": { "kind": "context", "default": "Result", "description": "Domain model type returned by the service." },
+    "operation": { "kind": "context", "default": "Data", "description": "Operation name fragment, e.g. Forecast." }
+  }
+}

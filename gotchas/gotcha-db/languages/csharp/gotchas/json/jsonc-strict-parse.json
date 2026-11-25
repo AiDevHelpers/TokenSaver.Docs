@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "languages/csharp/gotchas/json/jsonc-strict-parse",
+  "title": "System.Text.Json rejects JSONC (comments/trailing commas) by default",
+  "language": "csharp",
+  "kind": "code-pattern",
+  "symptoms": [
+    "JsonNode.Parse/JsonDocument.Parse throws on a config file that looks valid",
+    "Existing user config silently overwritten with only new entries after a swallowed parse error"
+  ],
+  "bad_pattern": "JsonNode.Parse(text)",
+  "good_pattern": "JsonNode.Parse(text, null, new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true })",
+  "detection": {
+    "kind": "regex",
+    "pattern": "Json(Node|Document)\\.Parse\\([^,)]+\\)",
+    "file_glob": "*.cs"
+  },
+  "error_signatures": ["JsonReaderException", "'/' is an invalid start of a value"],
+  "fix_snippet": "snippets/csharp/jsonc_parse",
+  "severity": "error",
+  "explanation": "AI tool configs (claude_desktop_config.json, VS Code settings.json) are JSONC — comments and trailing commas — which System.Text.Json rejects by default. Parse with JsonDocumentOptions { CommentHandling = Skip, AllowTrailingCommas = true }. A swallowed parse failure followed by a write can destroy the user's existing config.",
+  "source": "docs/pitfalls.md#reading-external-json-config-files-jsonc"
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gotcha-db/schema/snippet.schema.json",
+  "title": "Snippet sidecar (accompanies a .tpl file of the same name)",
+  "type": "object",
+  "required": ["schema_version", "id", "language", "description", "variables"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9_/-]+$" },
+    "language": { "type": "string" },
+    "description": { "type": "string" },
+    "variables": {
+      "type": "object",
+      "description": "Every {{variable}} used in the .tpl must be declared here.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["kind"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": { "type": "string", "enum": ["style", "dependency", "context"], "description": "style: resolved via style chain. dependency: resolved from scanned deps. context: caller must supply." },
+          "default": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "patterns/csharp/net/fetch-parse-bind",
+  "title": "Fetch external data, parse it, update the UI",
+  "language": "csharp",
+  "intent_tags": ["http", "fetch", "api", "parse", "json", "weather", "update ui", "update page", "maui", "display data", "rest client"],
+  "applies_to": { "dependency": "maui", "version_range": ">=8.0" },
+  "summary": "Three components: a typed HttpClient service does fetch+parse+map (testable, no UI types); an observable viewmodel owns state and a refresh command; the page just binds. Keeps parsing off the UI thread and out of code-behind.",
+  "components": [
+    {
+      "role": "service",
+      "name_hint": "{{domain}}Service",
+      "description": "Typed HttpClient service registered via AddHttpClient<T>: fetch, deserialize, map DTO to domain model.",
+      "skeleton": "snippets/csharp/typed_httpclient_service",
+      "steps": [
+        {
+          "placeholder": "fetch",
+          "description": "GET the endpoint with cancellation + timeout, headers-first streaming",
+          "starting_point": "snippets/csharp/httpclient_get_json"
+        },
+        {
+          "placeholder": "parse",
+          "description": "Deserialize the response body into a DTO",
+          "starting_point": "snippets/csharp/jsonc_parse",
+          "gotchas": ["languages/csharp/gotchas/json/jsonc-strict-parse"]
+        },
+        {
+          "placeholder": "map",
+          "description": "Map DTO to the domain model the viewmodel binds to (domain-specific, no starting point)"
+        }
+      ]
+    },
+    {
+      "role": "viewmodel",
+      "uses": "patterns/csharp/mvvm/observable-viewmodel",
+      "description": "Composed sub-pattern: owns bound state, busy-guarded RefreshCommand calls the service."
+    },
+    {
+      "role": "page",
+      "description": "XAML page binds to the viewmodel's state and IsBusy; no logic in code-behind beyond BindingContext wiring."
+    }
+  ],
+  "gotchas": ["languages/csharp/gotchas/nullability/null-forgiving-habit"],
+  "related": ["patterns/csharp/mvvm/observable-viewmodel"]
+}

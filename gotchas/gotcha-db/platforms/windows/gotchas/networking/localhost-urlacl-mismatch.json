@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "platforms/windows/gotchas/networking/localhost-urlacl-mismatch",
+  "title": "localhost vs 127.0.0.1 hit different http.sys URL ACLs — hangs/503s while the server is healthy",
+  "language": "any",
+  "kind": "environment",
+  "applies_to": { "platform": "windows" },
+  "symptoms": [
+    "Health check to localhost times out or returns a generic http.sys/IIS 503 HTML page, not app JSON",
+    "Looks exactly like a hung process; app code is fine",
+    "After an unclean kill, even the correct hostname hangs indefinitely (wedged request queue)"
+  ],
+  "error_signatures": ["503 Service Unavailable"],
+  "severity": "error",
+  "explanation": "HttpListener prefixes registered for the literal `localhost` hostname are scoped at the http.sys kernel level; requests to 127.0.0.1/[::1] send a different Host header, don't match, and http.sys answers 503 itself without reaching the app. Client and server must agree on hostname. Separately, an uncleanly-killed prior instance can leave a wedged http.sys request queue that hangs even correct requests — a clean service restart clears it.",
+  "diagnosis": "netsh http show urlacl and netsh http show servicestate view=requestq show what's registered and receiving. Probe the backing service (e.g. Ollama /api/tags) separately — if it answers instantly, the hang is the router layer, not model loading.",
+  "source": "docs/pitfalls.md#curlinvoke-webrequest-to-localhost-can-hang-or-503"
+}

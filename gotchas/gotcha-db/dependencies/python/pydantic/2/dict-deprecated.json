@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "dependencies/python/pydantic/2/dict-deprecated",
+  "title": "Pydantic v2 deprecates .dict()/.json() in favor of model_dump()",
+  "language": "python",
+  "kind": "code-pattern",
+  "severity": "warning",
+  "explanation": "v2 renamed .dict() -> model_dump() and .json() -> model_dump_json(). The old names emit deprecation warnings and will be removed in v3.",
+  "applies_to": {
+    "dependency": "pydantic",
+    "version_range": ">=2.0"
+  },
+  "symptoms": [
+    "PydanticDeprecatedSince20 warnings",
+    "json() argument errors after upgrade"
+  ],
+  "bad_pattern": "model.dict()",
+  "good_pattern": "model.model_dump()",
+  "detection": {
+    "kind": "regex",
+    "pattern": "\\.(dict|json)\\(\\)",
+    "file_glob": "*.py"
+  },
+  "error_signatures": [
+    "PydanticDeprecatedSince20"
+  ],
+  "source": "https://docs.pydantic.dev/latest/migration/",
+  "related": [
+    "dependencies/python/pydantic/1/no-model-dump"
+  ]
+}

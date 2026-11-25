@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "dependencies/python/pydantic/1/no-model-dump",
+  "title": "Pydantic v1 has no model_dump()/model_dump_json()",
+  "language": "python",
+  "kind": "code-pattern",
+  "severity": "error",
+  "explanation": "model_dump()/model_dump_json() were introduced in pydantic v2. On v1 use .dict()/.json(). AI-generated code frequently mixes the two APIs.",
+  "applies_to": {
+    "dependency": "pydantic",
+    "version_range": ">=1.0 <2.0"
+  },
+  "symptoms": [
+    "AttributeError at runtime on code copied from v2 docs/examples"
+  ],
+  "bad_pattern": "model.model_dump()",
+  "good_pattern": "model.dict()",
+  "detection": {
+    "kind": "regex",
+    "pattern": "\\.model_dump(_json)?\\(",
+    "file_glob": "*.py"
+  },
+  "error_signatures": [
+    "AttributeError: .* has no attribute 'model_dump'"
+  ],
+  "source": "https://docs.pydantic.dev/latest/migration/",
+  "related": [
+    "dependencies/python/pydantic/2/dict-deprecated"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "languages/python/gotchas/example/bad-detection-kind",
+  "title": "Must be rejected: detection.kind not in enum",
+  "language": "python",
+  "kind": "code-pattern",
+  "severity": "warning",
+  "explanation": "detection.kind 'ast' is reserved for a future schema version.",
+  "detection": { "kind": "ast", "pattern": "x" }
+}

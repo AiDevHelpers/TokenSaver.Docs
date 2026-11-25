@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "languages/powershell/gotchas/versioning/requires-version-7",
+  "title": "PS7-targeting scripts should start with #Requires -Version 7",
+  "language": "powershell",
+  "kind": "code-pattern",
+  "applies_to": { "language_version": ">=7.0" },
+  "symptoms": ["Cryptic parse errors when a PS7 script is run under Windows PowerShell 5.1"],
+  "good_pattern": "#Requires -Version 7.0",
+  "severity": "warning",
+  "explanation": "Scripts using PS7 syntax fail with cryptic parse errors under 5.1. A #Requires -Version 7.0 header fails fast with a clear message instead. Also note 5.1→7 behavior changes: no IE parsing engine in Invoke-WebRequest (.ParsedHtml gone); -eq remains case-insensitive (use -ceq when case matters).",
+  "source": "docs/pitfalls.md#powershell-7"
+}

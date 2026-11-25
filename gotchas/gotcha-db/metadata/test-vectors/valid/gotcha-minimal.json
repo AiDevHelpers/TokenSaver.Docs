@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "id": "languages/python/gotchas/example/minimal",
+  "title": "Minimal valid gotcha",
+  "language": "python",
+  "kind": "environment",
+  "severity": "info",
+  "explanation": "Smallest record that must pass: only required fields."
+}

@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "id": "languages/csharp/errors/cs8858-with-on-class",
+  "match": "CS8858",
+  "language": "csharp",
+  "gotchas": ["languages/csharp/gotchas/records/with-requires-record"]
+}

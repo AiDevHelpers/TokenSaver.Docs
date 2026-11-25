@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "snippets/csharp/observable_viewmodel",
+  "language": "csharp",
+  "description": "CommunityToolkit.Mvvm observable viewmodel with busy-guarded refresh command.",
+  "variables": {
+    "vm_name": { "kind": "context", "default": "MainViewModel", "description": "Viewmodel class name." },
+    "state_type": { "kind": "context", "default": "Result", "description": "Type of the bound state." },
+    "state_field": { "kind": "context", "default": "data", "description": "Backing field name (lowercase)." }
+  }
+}
